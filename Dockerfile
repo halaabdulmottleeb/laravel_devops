@@ -28,17 +28,13 @@ COPY . .
 # Set file permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# Install Nginx
-RUN apt-get install -y nginx
+# Generate the application key
+RUN php artisan key:generate
 
-# Remove default Nginx site configuration
-RUN rm /etc/nginx/sites-enabled/default
+# Run migrations
+RUN php artisan migrate --force
 
-# Copy your nginx.conf into Nginx configuration directory
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+# Run seeders (customize this as needed)
+RUN php artisan db:seed
 
-# Expose ports for both PHP-FPM and Nginx
-EXPOSE 9000 80
-
-# Start PHP-FPM and Nginx using supervisor
-CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]
+CMD ["php-fpm"]

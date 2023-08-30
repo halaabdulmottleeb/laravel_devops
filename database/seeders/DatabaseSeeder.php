@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Tenant;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,6 +14,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $tenant1 = Tenant::create(['id' => 'foo']);
+        $tenant2 = Tenant::create(['id' => 'bar']);
+
+        $tenant1->domains()->create(['domain' => 'foo.laravelproject.local']);
+        $tenant2->domains()->create(['domain' => 'bar.laravelproject.local']);
+    
     }
 }
