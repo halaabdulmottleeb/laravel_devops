@@ -46,8 +46,8 @@
 5. **Run Composer Install:**:
 
    ```sh
-   git clone https://github.com/halaabdulmottleeb/laravel_devops.git
-   cd laravel_devops
+   composer install
+
 
 6. **Run Migrations:**:
 
