@@ -15,5 +15,5 @@ use Stancl\Tenancy\Database\Models\Tenant;
 */
 
 Route::get('/', function () {
-    return "hello";
+    return "This is your central application";
 });

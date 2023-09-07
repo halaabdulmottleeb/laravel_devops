@@ -25,16 +25,22 @@ RUN composer install --no-scripts
 # Copy the rest of the application
 COPY . .
 
+
 # Set file permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 # Generate the application key
 RUN php artisan key:generate
 
-# Run migrations
-RUN php artisan migrate --force
+# Add custom hosts entries to the container's hosts file
+COPY custom-hosts /etc/nginx/conf.d/custom-hosts
+COPY .env.dev .env
 
-# Run seeders (customize this as needed)
-RUN php artisan db:seed
+
+# # Run migrations
+# RUN php artisan migrate --force
+
+# # Run seeders (customize this as needed)
+# RUN php artisan db:seed
 
 CMD ["php-fpm"]

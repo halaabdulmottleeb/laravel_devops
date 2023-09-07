@@ -9,7 +9,7 @@ services:
     networks:
       - laravel
 
-  app:
+  backend:
     container_name: backend
     build:
       context: .
@@ -27,16 +27,11 @@ services:
       context: .
       dockerfile: nginx/nginx.dockerfile  # Update this to the correct file name
     ports:
-      - "89:80"
+      - "80:80"
     depends_on:
-      - app
-    environment:
-      DB_HOST: db 
-
+      - backend
     networks:
       - laravel
-
- 
 
 networks:
   laravel:
