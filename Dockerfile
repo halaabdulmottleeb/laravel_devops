@@ -24,6 +24,7 @@ RUN composer install --no-scripts
 
 # Copy the rest of the application
 COPY . .
+COPY .env.dev .env
 
 
 # Set file permissions
@@ -34,7 +35,6 @@ RUN php artisan key:generate
 
 # Add custom hosts entries to the container's hosts file
 COPY custom-hosts /etc/nginx/conf.d/custom-hosts
-COPY .env.dev .env
 
 
 # # Run migrations
