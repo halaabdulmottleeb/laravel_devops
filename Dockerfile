@@ -15,17 +15,18 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql
 
-# Install Composer
+# Install Composer globally
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Copy composer files for dependency installation
-COPY composer.json composer.lock ./
-RUN composer install --no-scripts
+COPY composer.json  .
+
+RUN composer require fruitcake/laravel-cors
+# Install Composer dependencies (without running scripts)
+RUN composer install
 
 # Copy the rest of the application
 COPY . .
-COPY .env.dev .env
-
 
 # Set file permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
@@ -33,14 +34,5 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 # Generate the application key
 RUN php artisan key:generate
 
-# Add custom hosts entries to the container's hosts file
-COPY custom-hosts /etc/nginx/conf.d/custom-hosts
-
-
-# # Run migrations
-# RUN php artisan migrate --force
-
-# # Run seeders (customize this as needed)
-# RUN php artisan db:seed
-
+# Start PHP-FPM (or your web server) - adjust this based on your setup
 CMD ["php-fpm"]
